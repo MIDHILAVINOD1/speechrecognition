@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container'
 import axios from 'axios';
 
 const configuration = new Configuration({
-   // apiKey
+  apiKey: "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",
 });
 const openai = new OpenAIApi(configuration);
 
