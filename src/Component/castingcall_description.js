@@ -1,20 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Configuration, OpenAIApi } from "openai";
-import {Form, Button, Input, Select, DatePicker} from "antd";
+import {Form, Button, Input, Select, DatePicker, Card, Col, Row, Table} from "antd";
 import Header from './header';
 import Container from 'react-bootstrap/Container'
 import axios from 'axios';
 
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey: "",
 });
 const openai = new OpenAIApi(configuration);
 
+const columns = [{
+  title: 'Title',
+  dataIndex: 'title',
+}, {
+  title: 'Role',
+  dataIndex: 'role',
+}];
+
+
 function Castingcalldescription() {
-  
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [buttonLoading, setButtonLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+
+  useEffect(() => {
+    setData([]);
+    setLoading(true);
+    axios.get("http://localhost:3000/casting").then(({ data: result }) => {
+        let data = []
+        result.forEach((d, idx) => {
+            data.push({
+              _id: d._id,
+              title: d?.title,
+              role: d?.role,
+            });
+        });
+        setData(data);
+        setLoading(false);
+    }).catch(function (error) {
+        setLoading(false);
+        console.error(error);
+    });
+  }, [result]);
 
   const handleSubmit = async (values) => {
   
@@ -247,6 +277,19 @@ function Castingcalldescription() {
          null  }    
      </Form>
       </div>
+      <React.Fragment>
+          <Row>
+              <Col span={24}>
+                  <Card title="Casting List" >
+                      <Table className="gx-table-responsive"
+                          loading={loading}
+                          columns={columns}
+                          dataSource={data}
+                      />
+                  </Card>
+              </Col>
+          </Row>
+      </React.Fragment>
         </Container>
      );
 

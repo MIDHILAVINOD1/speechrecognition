@@ -40,9 +40,8 @@ const CastingDetails = mongoose.model('CastingDetails', castingDetailsSchema);
 app.use(express.urlencoded({extended:false}));
 
 // API endpoint to store the Crew Details
-app.put('/crew', async (req, res) => {
-  console.log("inside", req.body.testDataInfo)
-  let result = await CrewDetails.find({profession: { $regex: req.body.testDataInfo, $options: 'i' }});
+app.get('/crew', async (req, res) => {
+  let result = await CrewDetails.find({ });
   res.send(result);
 })
 
@@ -72,9 +71,9 @@ app.post('/Crewdescription', (req, res) => {
   });
 });
 
-app.get('/casting', (req, res) => {
-  console.log("inside", req.params)
-  res.send('Details saved successfully');
+app.get('/casting', async (req, res) => {
+  let result = await CastingDetails.find({ });
+  res.send(result);
 })
 
 app.post('/Castingcalldescription', (req, res) => {

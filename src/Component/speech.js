@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import {Form, Button, Input, Select} from "antd";
+import {Form, Button, Input, Select, Col, Row, } from "antd";
 import Container from 'react-bootstrap/Container'
 import { Configuration, OpenAIApi } from "openai";
 import Header from './header';
@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const { TextArea } = Input;
 const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: "",
   });
   const openai = new OpenAIApi(configuration);
 
@@ -100,7 +100,6 @@ const Dictaphone = () => {
     resetTranscript();
   };
 
-  console.log(crewData)
 
   return (
     <Container fluid>
@@ -113,12 +112,21 @@ const Dictaphone = () => {
      wrapperCol={{ span: 14}}
      className="mb-form"
      >
-      <p>Microphone: {listening ? 'on' : 'off'}</p>
-      <button onClick={SpeechRecognition.startListening}>Start</button>
-       <button onClick={SpeechRecognition.stopListening}>Stop</button>
-       <button onClick={resetTranscript}>Reset</button>
+          <Row>
+    <p>Microphone: {listening ? 'on' : 'off'}</p>
+     
+    </Row>
+    <Row>
+      <Button onClick={SpeechRecognition.startListening}>Start</Button>
+      &nbsp;&nbsp;
+      <Button onClick={SpeechRecognition.stopListening}>Stop</Button>
+      &nbsp;&nbsp;
+      <Button onClick={resetTranscript}>Reset</Button>
+    </Row>
+    <br></br>
+    <br></br>
     
-        <Form.Item
+        {/* <Form.Item
         name="testInput" 
         label="Test Input"
 
@@ -133,23 +141,49 @@ const Dictaphone = () => {
         hasFeedback
         >
          <Input placeholder="Type your testInput" />
-       </Form.Item>
+       </Form.Item> */}
 
        <Form.Item
-        name="response" 
-        label="Response"
+        name="camera" 
+        label="Cameras"
         >
-         <TextArea rows={5}  placeholder="Response" disabled={true} />
+         <TextArea rows placeholder="Text" disabled={false}/>
        </Form.Item>
+       <Form.Item
+        name="lightning" 
+        label="Lightning"
+        >
+         <TextArea rows placeholder="Text" disabled={false}/>
+       </Form.Item>
+       <Form.Item
+        name="lenses" 
+        label="Lenses"
+        >
+         <TextArea rows placeholder="Text" disabled={false}/>
+       </Form.Item>
+       <Form.Item
+        name="camera support" 
+        label="Camera Support"
+        >
+         <TextArea rows placeholder="Text" disabled={false}/>
+       </Form.Item>
+       <Form.Item
+        name="audio gear" 
+        label="Audio Gear"
+        >
+         <TextArea rows placeholder="Text" disabled={false}/>
+       </Form.Item>
+       
+       
        <Form.Item wrapperCol={{ span: 24 }}>
-         <Button  htmlType="submit">
+         {/* <Button  htmlType="submit">
            Get Response
-         </Button>
+         </Button> */}
      </Form.Item>
        </Form>
-       <p>{crewData?.length > 0 ? (crewData?.map((c) => {
+       {/* <p>{crewData?.length > 0 ? (crewData?.map((c) => {
          return c.name
-      }) ): null }</p>
+      }) ): null }</p> */}
        </div>
        </Container>
     // <div>

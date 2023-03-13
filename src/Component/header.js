@@ -16,7 +16,7 @@ class Header extends Component {
                   <NavLink className="mb-nav-link" to="/">Home</NavLink>
                   <NavLink className="mb-nav-link" to="/crew">Crew</NavLink>
                   <NavLink className="mb-nav-link" to="/castingcall">Casting Call</NavLink>
-                  <NavLink className="mb-nav-link" to="/speach">Speach</NavLink>
+                  <NavLink className="mb-nav-link" to="/speech">Speech</NavLink>
                 </Nav>
               </Navbar.Collapse>
           </Navbar> 

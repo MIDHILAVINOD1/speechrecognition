@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Configuration, OpenAIApi } from "openai";
-import {Form, Button, Input, Select} from "antd";
+import {Form, Button, Input, Select, Card, Col, Row, Table} from "antd";
 import Container from 'react-bootstrap/Container'
 import Header from './header';
 import axios from 'axios';
@@ -9,21 +9,51 @@ import axios from 'axios';
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 // axios.defaults.headers.post['crossDomain'] = true;
 
-
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey: "",
 });
+
+const columns = [{
+  title: 'Name',
+  dataIndex: 'name',
+}, {
+  title: 'Profession',
+  dataIndex: 'profession',
+}];
+
+
 const openai = new OpenAIApi(configuration);
 
 function Crewdescription() {
 
   const [result, setResult] = useState(null);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const handleSubmit = async (values) => {
-    console.log(values)
+  useEffect(() => {
+    setData([]);
+    setLoading(true);
+    axios.get("http://localhost:3000/crew").then(({ data: result }) => {
+        let data = []
+        result.forEach((d, idx) => {
+            data.push({
+              _id: d._id,
+              name: d?.name,
+              profession: d?.profession,
+            });
+        });
+        setData(data);
+        setLoading(false);
+    }).catch(function (error) {
+        setLoading(false);
+        console.error(error);
+    });
+}, [result]);
 
+
+  const handleSubmit = async (values) => {
     let value = `Generate a unique plagiarism free profile content in one paragraph 100 words for name: ${values.name},Profession: ${values.Profession},Movies Acted on: ${values.movies_acted_on},Languages Speak: ${values.languages_speaks},Industry: ${values.industry},Awards and Achievements: ${values.awards_and_achievements}`;
     setButtonLoading(true);
   try{
@@ -38,8 +68,6 @@ function Crewdescription() {
     });
     if(response)
     {
-
-      console.log(values)
        axios({
         method: 'post',
         url: 'http://localhost:3000/Crewdescription',
@@ -218,6 +246,19 @@ function Crewdescription() {
       null }
   </Form>
   </div>
+  <React.Fragment>
+          <Row>
+              <Col span={24}>
+                  <Card title="Crew List" >
+                      <Table className="gx-table-responsive"
+                          loading={loading}
+                          columns={columns}
+                          dataSource={data}
+                      />
+                  </Card>
+              </Col>
+          </Row>
+      </React.Fragment>
     </Container>
     
   );
